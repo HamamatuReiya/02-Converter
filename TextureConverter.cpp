@@ -1,4 +1,7 @@
 #include "TextureConverter.h"
+#include <Windows.h>
+
+using namespace DirectX;
 
 void TextureConverter::ConvertTextureWICToDDS(const std::string& filePath) 
 {
@@ -9,9 +12,12 @@ void TextureConverter::ConvertTextureWICToDDS(const std::string& filePath)
 void TextureConverter::LoadWICTextureFromFile(const std::string& filePath)
 {
 	// ファイルパスをワイド文字列に変換する
-	std::wstring wfilePath = ConvertMultiByteStringToWideString(filePath);
+	std::wstring wFilePath = ConvertMultiByteStringToWideString(filePath);
 
 	// テクスチャを読み込む
+	// WICテクスチャのロード
+	HRESULT result = LoadFromWICFile(wFilePath.c_str(), WIC_FLAGS_NONE, &metadata_, scratchImage_);
+	assert(SUCCEEDED(result));
 
 	// 読み込んだディフューズテクスチャをSRGBとして扱う
 
